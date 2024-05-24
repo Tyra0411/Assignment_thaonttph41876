@@ -7,11 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Component
 public class NhanVien {
     private Integer id;
     @NotBlank
@@ -20,6 +22,11 @@ public class NhanVien {
     private String maNV;
     @NotBlank
     private String tenDangNhap;
+    private String role;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @NotBlank
     private String matKhau;
     @NotNull

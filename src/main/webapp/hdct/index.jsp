@@ -10,11 +10,11 @@
 <body class="container mt-3">
 <h2 class="text-center">Quản Lý Hóa Đơn Chi Tiết</h2>
 
-<div class="mt-3 text-end">
-    <a href="/hdct/create" class="btn btn-primary">
-        Add
-    </a>
-</div>
+<%--<div class="mt-3 text-end">--%>
+<%--    <a href="/hdct/create" class="btn btn-primary">--%>
+<%--        Add--%>
+<%--    </a>--%>
+<%--</div>--%>
     <form method="get" action="/hdct/index" class="my-3">
         <div class="input-group">
             <input type="number" name="idHoaDon" class="form-control" placeholder="Tìm kiếm theo ID hóa đơn"
@@ -42,7 +42,7 @@
             <td>${hdct.trangThai == 1 ? "Đã thanh toán" : "Chưa thanh toán"}</td>
             <td>
                 <a href="/hdct/edit/${hdct.id}" class="btn btn-success">Update</a>
-                <a onclick="return confirm('Bạn chắc chắn muốn xóa?')" href="/hdct/delete/${hdct.id}" class="btn btn-danger">Delete</a>
+<%--                <a onclick="return confirm('Bạn chắc chắn muốn xóa?')" href="/hdct/delete/${hdct.id}" class="btn btn-danger">Delete</a>--%>
             </td>
         </tr>
     </c:forEach>

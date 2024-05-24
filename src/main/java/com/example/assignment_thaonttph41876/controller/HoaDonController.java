@@ -28,32 +28,32 @@ public class HoaDonController {
         khachHangRepository = new KhachHangRepository();
     }
 
-    @GetMapping("/create")
-    public String create(Model model,
-                         HoaDon hoaDon){
-        List<NhanVien> listNV = this.nhanVienRepository.findAll();
-        List<KhachHang> listKH = this.khachHangRepository.findAll();
-        model.addAttribute("data", hoaDon);
-        model.addAttribute("dataNV", listNV);
-        model.addAttribute("dataKH", listKH);
-        return "hoa_don/create";
-    }
-
-    @PostMapping("/store")
-    public String store(Model model,
-                        @Valid HoaDon hoaDon, BindingResult validate){
-        if (validate.hasErrors()){
-            Map<String, String> errors = new HashMap<>();
-            for (FieldError e:validate.getFieldErrors()){
-                errors.put(e.getField(), e.getDefaultMessage());
-            }
-            model.addAttribute("data", hoaDon);
-            model.addAttribute("errors", errors);
-            return "hoa_don/create";
-        }
-        this.hoaDonRepository.create(hoaDon);
-        return "redirect:/hoa-don/index";
-    }
+//    @GetMapping("/create")
+//    public String create(Model model,
+//                         HoaDon hoaDon){
+//        List<NhanVien> listNV = this.nhanVienRepository.findAll();
+//        List<KhachHang> listKH = this.khachHangRepository.findAll();
+//        model.addAttribute("data", hoaDon);
+//        model.addAttribute("dataNV", listNV);
+//        model.addAttribute("dataKH", listKH);
+//        return "hoa_don/create";
+//    }
+//
+//    @PostMapping("/store")
+//    public String store(Model model,
+//                        @Valid HoaDon hoaDon, BindingResult validate){
+//        if (validate.hasErrors()){
+//            Map<String, String> errors = new HashMap<>();
+//            for (FieldError e:validate.getFieldErrors()){
+//                errors.put(e.getField(), e.getDefaultMessage());
+//            }
+//            model.addAttribute("data", hoaDon);
+//            model.addAttribute("errors", errors);
+//            return "hoa_don/create";
+//        }
+//        this.hoaDonRepository.create(hoaDon);
+//        return "redirect:/hoa-don/index";
+//    }
 
     @GetMapping("/index")
     public String index(Model model,
@@ -78,11 +78,11 @@ public class HoaDonController {
     }
 
 
-    @GetMapping("delete/{id}")
-    public String delete(@PathVariable("id")Integer id){
-        hoaDonRepository.deleteById(id);
-        return "redirect:/hoa-don/index";
-    }
+//    @GetMapping("delete/{id}")
+//    public String delete(@PathVariable("id")Integer id){
+//        hoaDonRepository.deleteById(id);
+//        return "redirect:/hoa-don/index";
+//    }
 
     @GetMapping("edit/{id}")
     public String edit(@PathVariable("id")Integer id, Model model){

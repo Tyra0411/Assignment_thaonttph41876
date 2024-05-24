@@ -26,33 +26,33 @@ public class HDCTController {
     @Autowired
     private SanPhamChiTietRepo sanPhamChiTietRepo;
 
-    @GetMapping("create")
-    public String create(@ModelAttribute("data") HDCT hdct, Model model) {
-        List<HoaDon> listHD = hoaDonRepository.findAll();
-        List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepo.findAll();
-        model.addAttribute("dataHD", listHD);
-        model.addAttribute("dataSPCT", listSPCT);
-        return "hdct/create";
-    }
-
-    @PostMapping("store")
-    public String store(Model model, @Valid HDCT hdct, BindingResult validate) {
-        if (validate.hasErrors()) {
-            Map<String, String> errors = new HashMap<>();
-            for (FieldError e : validate.getFieldErrors()) {
-                errors.put(e.getField(), e.getDefaultMessage());
-            }
-            model.addAttribute("data", hdct);
-            model.addAttribute("errors", errors);
-            List<HoaDon> listHD = hoaDonRepository.findAll();
-            List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepo.findAll();
-            model.addAttribute("dataHD", listHD);
-            model.addAttribute("dataSPCT", listSPCT);
-            return "hdct/create";
-        }
-        this.hdctRepository.create(hdct);
-        return "redirect:/hdct/index";
-    }
+//    @GetMapping("create")
+//    public String create(@ModelAttribute("data") HDCT hdct, Model model) {
+//        List<HoaDon> listHD = hoaDonRepository.findAll();
+//        List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepo.findAll();
+//        model.addAttribute("dataHD", listHD);
+//        model.addAttribute("dataSPCT", listSPCT);
+//        return "hdct/create";
+//    }
+//
+//    @PostMapping("store")
+//    public String store(Model model, @Valid HDCT hdct, BindingResult validate) {
+//        if (validate.hasErrors()) {
+//            Map<String, String> errors = new HashMap<>();
+//            for (FieldError e : validate.getFieldErrors()) {
+//                errors.put(e.getField(), e.getDefaultMessage());
+//            }
+//            model.addAttribute("data", hdct);
+//            model.addAttribute("errors", errors);
+//            List<HoaDon> listHD = hoaDonRepository.findAll();
+//            List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepo.findAll();
+//            model.addAttribute("dataHD", listHD);
+//            model.addAttribute("dataSPCT", listSPCT);
+//            return "hdct/create";
+//        }
+//        this.hdctRepository.create(hdct);
+//        return "redirect:/hdct/index";
+//    }
 
     @GetMapping("index")
     public String index(Model model,
@@ -80,11 +80,11 @@ public class HDCTController {
     }
 
 
-    @GetMapping("delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
-        this.hdctRepository.deleteById(id);
-        return "redirect:/hdct/index";
-    }
+//    @GetMapping("delete/{id}")
+//    public String delete(@PathVariable("id") Integer id) {
+//        this.hdctRepository.deleteById(id);
+//        return "redirect:/hdct/index";
+//    }
 
     @GetMapping("edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {

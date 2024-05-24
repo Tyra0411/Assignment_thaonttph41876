@@ -12,14 +12,13 @@
 </head>
 <body class="container mt-3">
 <h2 class="text-center">Quản Lý Hóa Đơn</h2>
-<div class="text-end my-3">
-    <a href="/hoa-don/create" class="btn btn-primary">
-        Add
-    </a>
-</div>
+<%--<div class="text-end my-3">--%>
+<%--    <a href="/hoa-don/create" class="btn btn-primary">--%>
+<%--        Add--%>
+<%--    </a>--%>
+<%--</div>--%>
 
 <form action="/hoa-don/search" method="GET">
-    <!-- Các trường tìm kiếm khác (nếu có) -->
     <div class="form-group">
         <label for="trangThai">Trạng thái:</label>
         <select class="form-control" id="trangThai" name="trangThai">
@@ -53,7 +52,7 @@
             <td>${hd.trangThai == 1 ? "Đã thanh toán" : "Chưa thanh toán"}</td>
             <td>
                 <a href="/hoa-don/edit/${hd.id}" class="btn btn-success">Update</a>
-                <a onclick="return confirm('Ban chắc chắn muốn xóa?')" href="/hoa-don/delete/${hd.id}" class="btn btn-danger">Delete</a>
+<%--                <a onclick="return confirm('Ban chắc chắn muốn xóa?')" href="/hoa-don/delete/${hd.id}" class="btn btn-danger">Delete</a>--%>
             </td>
         </tr>
     </c:forEach>

@@ -13,16 +13,16 @@ public class NhanVienRepository {
 
     public NhanVienRepository(){
         list = new ArrayList<>();
-        list.add(new NhanVien(1, "Nguyen Van An", "NV001", "annv1@gmail.com", "123456", 1));
-        list.add(new NhanVien(2, "Nguyen Van Binh", "NV002", "binhnv1@gmail.com", "123456", 1));
-        list.add(new NhanVien(3, "Tran Thi Chuc", "NV003", "chuctt1@gmail.com", "123456", 1));
-        list.add(new NhanVien(4, "Nguyen Thi Ha", "NV004", "hant1@gmail.com", "123456", 0));
-        list.add(new NhanVien(5, "Pham Van Duong", "NV005", "duongpv1@gmail.com", "123456", 1));
-        list.add(new NhanVien(6, "Tran Van Cuong", "NV006", "cuongtv1@gmail.com", "123456", 1));
-        list.add(new NhanVien(7, "Le Thi Kim", "NV007", "kimlt1@gmail.com", "123456", 1));
-        list.add(new NhanVien(8, "Hoang Minh Duc", "NV008", "duchm1@gmail.com", "123456", 1));
-        list.add(new NhanVien(9, "Do Thi Thanh", "NV009", "thanhdt1@gmail.com", "123456", 1));
-        list.add(new NhanVien(10, "Tran Van Luong", "NV010", "luongtv1@gmail.com", "123456", 1));
+        list.add(new NhanVien(1, "Nguyen Van An", "NV001", "admin", "ADMIN", "123456", 1));
+        list.add(new NhanVien(2, "Nguyen Van Binh", "NV002", "user","USER", "123456", 1));
+        list.add(new NhanVien(3, "Tran Thi Chuc", "NV003", "chuctt1@gmail.com","USER", "123456", 1));
+        list.add(new NhanVien(4, "Nguyen Thi Ha", "NV004", "hant1@gmail.com","USER", "123456", 0));
+        list.add(new NhanVien(5, "Pham Van Duong", "NV005", "duongpv1@gmail.com","USER", "123456", 1));
+        list.add(new NhanVien(6, "Tran Van Cuong", "NV006", "cuongtv1@gmail.com","USER", "123456", 1));
+        list.add(new NhanVien(7, "Le Thi Kim", "NV007", "kimlt1@gmail.com","USER", "123456", 1));
+        list.add(new NhanVien(8, "Hoang Minh Duc", "NV008", "duchm1@gmail.com","USER", "123456", 1));
+        list.add(new NhanVien(9, "Do Thi Thanh", "NV009", "thanhdt1@gmail.com","USER", "123456", 1));
+        list.add(new NhanVien(10, "Tran Van Luong", "NV010", "luongtv1@gmail.com","USER", "123456", 1));
     }
 
     public List<NhanVien> findAll(){
