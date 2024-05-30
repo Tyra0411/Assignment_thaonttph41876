@@ -1,11 +1,14 @@
 package com.example.assignment_thaonttph41876.controller;
 
 import com.example.assignment_thaonttph41876.entities.*;
-import com.example.assignment_thaonttph41876.repositories.asm1.HDCTRepository;
-import com.example.assignment_thaonttph41876.repositories.asm1.HoaDonRepository;
-import com.example.assignment_thaonttph41876.repositories.asm1.SanPhamChiTietRepo;
+import com.example.assignment_thaonttph41876.repository.asm2.HDCTRepository;
+import com.example.assignment_thaonttph41876.repository.asm2.HoaDonRepository;
+import com.example.assignment_thaonttph41876.repository.asm2.SanPhamChiTietRepo;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,28 +57,40 @@ public class HDCTController {
 //        return "redirect:/hdct/index";
 //    }
 
+//    @GetMapping("index")
+//    public String index(Model model,
+//                        @RequestParam(name = "page", defaultValue = "1") int page,
+//                        @RequestParam(name = "size", defaultValue = "5") int size,
+//                        @RequestParam(name = "idHoaDon", required = false) Integer idHoaDon) {
+//        if (idHoaDon != null && idHoaDon <= 0) {
+//            idHoaDon = null;
+//        }
+//        List<HDCT> hdcts = (idHoaDon == null)
+//                ? hdctRepository.findPaginated(page, size)
+//                : hdctRepository.findByHoaDonIdPaginated(idHoaDon, page, size);
+//
+//        int totalItems = (idHoaDon == null)
+//                ? hdctRepository.getTotalItems()
+//                : hdctRepository.getTotalItemsByHoaDonId(idHoaDon);
+//
+//        int totalPages = (int) Math.ceil((double) totalItems / size);
+//
+//        model.addAttribute("data", hdcts);
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", totalPages);
+//        model.addAttribute("idHoaDon", idHoaDon);
+//        return "hdct/index";
+//    }
+
     @GetMapping("index")
-    public String index(Model model,
-                        @RequestParam(name = "page", defaultValue = "1") int page,
-                        @RequestParam(name = "size", defaultValue = "5") int size,
-                        @RequestParam(name = "idHoaDon", required = false) Integer idHoaDon) {
-        if (idHoaDon != null && idHoaDon <= 0) {
-            idHoaDon = null;
-        }
-        List<HDCT> hdcts = (idHoaDon == null)
-                ? hdctRepository.findPaginated(page, size)
-                : hdctRepository.findByHoaDonIdPaginated(idHoaDon, page, size);
-
-        int totalItems = (idHoaDon == null)
-                ? hdctRepository.getTotalItems()
-                : hdctRepository.getTotalItemsByHoaDonId(idHoaDon);
-
-        int totalPages = (int) Math.ceil((double) totalItems / size);
-
-        model.addAttribute("data", hdcts);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("idHoaDon", idHoaDon);
+    public String index(@RequestParam(name = "page", defaultValue = "0") int pageNo,
+                        @RequestParam(name = "size", defaultValue = "10") int pageSize,
+                        Model model) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<HDCT> page = hdctRepository.findAll(pageable);
+        model.addAttribute("data", page);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
         return "hdct/index";
     }
 
@@ -87,8 +102,7 @@ public class HDCTController {
 //    }
 
     @GetMapping("edit/{id}")
-    public String edit(@PathVariable("id") Integer id, Model model) {
-        HDCT hdct = this.hdctRepository.findById(id);
+    public String edit(@PathVariable("id") HDCT hdct, Model model) {
         model.addAttribute("data", hdct);
         List<HoaDon> listHD = hoaDonRepository.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepo.findAll();
@@ -112,7 +126,7 @@ public class HDCTController {
             model.addAttribute("errors", errors);
             return "hdct/edit";
         }
-        this.hdctRepository.update(hdct);
+        this.hdctRepository.save(hdct);
         return "redirect:/hdct/index";
     }
 }

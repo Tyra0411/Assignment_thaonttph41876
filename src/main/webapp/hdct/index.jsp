@@ -33,7 +33,7 @@
     <th>Hoạt động</th>
     </thead>
     <tbody>
-    <c:forEach items="${data}" var="hdct" varStatus="i">
+    <c:forEach items="${data.content}" var="hdct" varStatus="i">
         <tr>
             <td>${hdct.id}</td>
             <td>${hdct.idSPCT}</td>
@@ -50,19 +50,35 @@
 </table>
 
 <div class="d-flex justify-content-center">
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                <a class="page-link" href="/hdct/index?page=${currentPage - 1}&size=${size}&idHoaDon=${idHoaDon != null ? idHoaDon : ''}" tabindex="-1" aria-disabled="${currentPage == 1}">Previous</a>
-            </li>
-            <c:forEach begin="1" end="${totalPages}" var="pageNum">
-                <li class="page-item ${pageNum == currentPage ? 'active' : ''}">
-                    <a class="page-link" href="/hdct/index?page=${pageNum}&size=${size}&idHoaDon=${idHoaDon != null ? idHoaDon : ''}">${pageNum}</a>
+    <nav aria-label="Page navigation" class="mt-3">
+        <ul class="pagination justify-content-center">
+            <c:if test="${currentPage > 0}">
+                <li class="page-item">
+                    <a class="page-link" href="/hdct/index?page=0&size=${data.size}" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo; First</span>
+                    </a>
                 </li>
-            </c:forEach>
-            <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                <a class="page-link" href="/hdct/index?page=${currentPage + 1}&size=${size}&idHoaDon=${idHoaDon != null ? idHoaDon : ''}">Next</a>
+                <li class="page-item">
+                    <a class="page-link" href="/hdct/index?page=${currentPage - 1}&size=${data.size}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo; Previous</span>
+                    </a>
+                </li>
+            </c:if>
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Page ${currentPage + 1} of ${totalPages}</a>
             </li>
+            <c:if test="${currentPage < totalPages - 1}">
+                <li class="page-item">
+                    <a class="page-link" href="/hdct/index?page=${currentPage + 1}&size=${data.size}" aria-label="Next">
+                        <span aria-hidden="true">Next &raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="/hdct/index?page=${totalPages - 1}&size=${data.size}" aria-label="Last">
+                        <span aria-hidden="true">Last &raquo;&raquo;</span>
+                    </a>
+                </li>
+            </c:if>
         </ul>
     </nav>
 </div>

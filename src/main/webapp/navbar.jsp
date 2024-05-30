@@ -20,14 +20,14 @@
 <nav class="navbar navbar-expand-sm bg-light mb-4">
     <div class="container-fluid">
         <ul class="navbar-nav mb-3">
-            <c:if test="${sessionScope.role == 'ADMIN'}">
+<%--            <c:if test="${sessionScope.role == 'ADMIN'}">--%>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/hoa-don/index">Hóa đơn</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/hdct/index">Hóa đơn chi tiết</a>
                 </li>
-            </c:if>
+<%--            </c:if>--%>
             <li class="nav-item">
                 <a class="nav-link" href="/san-pham/index">Sản phẩm</a>
             </li>
@@ -47,14 +47,14 @@
                 <a class="nav-link" href="/nhan-vien/index">Nhân viên</a>
             </li>
         </ul>
-        <ul>
-            <label>Hello: ${sessionScope.tenDangNhap}</label>
-        </ul>
-        <ul class="navbar-nav mb-3">
-            <li class="nav-item">
-                <a class="nav-link" href="/auth/logout">Logout</a>
-            </li>
-        </ul>
+<%--        <ul>--%>
+<%--            <label>Hello: ${sessionScope.tenDangNhap}</label>--%>
+<%--        </ul>--%>
+<%--        <ul class="navbar-nav mb-3">--%>
+<%--            <li class="nav-item">--%>
+<%--                <a class="nav-link" href="/auth/logout">Logout</a>--%>
+<%--            </li>--%>
+<%--        </ul>--%>
     </div>
 </nav>
 

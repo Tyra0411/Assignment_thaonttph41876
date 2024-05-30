@@ -1,17 +1,20 @@
 package com.example.assignment_thaonttph41876.controller;
 
 import com.example.assignment_thaonttph41876.entities.*;
-import com.example.assignment_thaonttph41876.repositories.asm1.HoaDonRepository;
-import com.example.assignment_thaonttph41876.repositories.asm1.KhachHangRepository;
-import com.example.assignment_thaonttph41876.repositories.asm1.NhanVienRepository;
+import com.example.assignment_thaonttph41876.repository.asm2.HoaDonRepository;
+import com.example.assignment_thaonttph41876.repository.asm2.KhachHangRepository;
+import com.example.assignment_thaonttph41876.repository.asm2.NhanVienRepository;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +22,13 @@ import java.util.Map;
 @Controller
 @RequestMapping("/hoa-don")
 public class HoaDonController {
+    @Autowired
     private HoaDonRepository hoaDonRepository;
+    @Autowired
     private NhanVienRepository nhanVienRepository;
+    @Autowired
     private KhachHangRepository khachHangRepository;
-    public HoaDonController(){
-        hoaDonRepository = new HoaDonRepository();
-        nhanVienRepository = new NhanVienRepository();
-        khachHangRepository = new KhachHangRepository();
-    }
+
 
 //    @GetMapping("/create")
 //    public String create(Model model,
@@ -55,25 +57,37 @@ public class HoaDonController {
 //        return "redirect:/hoa-don/index";
 //    }
 
-    @GetMapping("/index")
-    public String index(Model model,
-                        @RequestParam(name = "page", defaultValue = "1") int page) {
-        int pageSize = 5; // Số hóa đơn trên mỗi trang
-        List<HoaDon> list = this.hoaDonRepository.findAll();
+//    @GetMapping("/index")
+//    public String index(Model model,
+//                        @RequestParam(name = "page", defaultValue = "1") int page) {
+//        int pageSize = 5; // Số hóa đơn trên mỗi trang
+//        List<HoaDon> list = this.hoaDonRepository.findAll();
+//
+//        // Tính tổng số trang
+//        int totalPages = (int) Math.ceil((double) list.size() / pageSize);
+//
+//        // Tính chỉ số bắt đầu của trang hiện tại
+//        int startIndex = (page - 1) * pageSize;
+//
+//        // Lấy một phần danh sách hóa đơn cho trang hiện tại
+//        List<HoaDon> paginatedList = list.subList(startIndex, Math.min(startIndex + pageSize, list.size()));
+//
+//        model.addAttribute("data", paginatedList);
+//        model.addAttribute("totalPages", totalPages);
+//        model.addAttribute("currentPage", page);
+//
+//        return "hoa_don/index";
+//    }
 
-        // Tính tổng số trang
-        int totalPages = (int) Math.ceil((double) list.size() / pageSize);
-
-        // Tính chỉ số bắt đầu của trang hiện tại
-        int startIndex = (page - 1) * pageSize;
-
-        // Lấy một phần danh sách hóa đơn cho trang hiện tại
-        List<HoaDon> paginatedList = list.subList(startIndex, Math.min(startIndex + pageSize, list.size()));
-
-        model.addAttribute("data", paginatedList);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", page);
-
+    @GetMapping("index")
+    public String index(@RequestParam(name = "page", defaultValue = "0") int pageNo,
+                        @RequestParam(name = "size", defaultValue = "10") int pageSize,
+                        Model model) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<HoaDon> page = hoaDonRepository.findAll(pageable);
+        model.addAttribute("data", page);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
         return "hoa_don/index";
     }
 
@@ -85,8 +99,7 @@ public class HoaDonController {
 //    }
 
     @GetMapping("edit/{id}")
-    public String edit(@PathVariable("id")Integer id, Model model){
-        HoaDon hoaDon = hoaDonRepository.findById(id);
+    public String edit(@PathVariable("id")HoaDon hoaDon, Model model){
         model.addAttribute("data", hoaDon);
         List<NhanVien> listNV = this.nhanVienRepository.findAll();
         List<KhachHang> listKH = this.khachHangRepository.findAll();
@@ -110,38 +123,38 @@ public class HoaDonController {
             model.addAttribute("errors", errors);
             return "hoa_don/edit";
         }
-        this.hoaDonRepository.update(hoaDon);
+        this.hoaDonRepository.save(hoaDon);
         return "redirect:/hoa-don/index";
     }
 
-    @GetMapping("/search")
-    public String search(Model model,
-                         @RequestParam(name = "trangThai", required = false) Integer trangThai,
-                         @RequestParam(name = "page", defaultValue = "1") int page) {
-        int pageSize = 5; // Số hóa đơn trên mỗi trang
-        List<HoaDon> list;
-        if (trangThai != null) {
-            list = hoaDonRepository.findByTrangThai(trangThai);
-        } else {
-            list = hoaDonRepository.findAll();
-        }
-
-        // Tính tổng số trang
-        int totalPages = (int) Math.ceil((double) list.size() / pageSize);
-
-        // Tính chỉ số bắt đầu của trang hiện tại
-        int startIndex = (page - 1) * pageSize;
-
-        // Lấy một phần danh sách hóa đơn cho trang hiện tại
-        List<HoaDon> paginatedList = list.subList(startIndex, Math.min(startIndex + pageSize, list.size()));
-
-        model.addAttribute("data", paginatedList);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("trangThai", trangThai); // Truyền trạng thái để hiển thị lại trong form search
-
-        return "hoa_don/index";
-    }
+//    @GetMapping("/search")
+//    public String search(Model model,
+//                         @RequestParam(name = "trangThai", required = false) Integer trangThai,
+//                         @RequestParam(name = "page", defaultValue = "1") int page) {
+//        int pageSize = 5; // Số hóa đơn trên mỗi trang
+//        List<HoaDon> list;
+//        if (trangThai != null) {
+//            list = hoaDonRepository.findByTrangThai(trangThai);
+//        } else {
+//            list = hoaDonRepository.findAll();
+//        }
+//
+//        // Tính tổng số trang
+//        int totalPages = (int) Math.ceil((double) list.size() / pageSize);
+//
+//        // Tính chỉ số bắt đầu của trang hiện tại
+//        int startIndex = (page - 1) * pageSize;
+//
+//        // Lấy một phần danh sách hóa đơn cho trang hiện tại
+//        List<HoaDon> paginatedList = list.subList(startIndex, Math.min(startIndex + pageSize, list.size()));
+//
+//        model.addAttribute("data", paginatedList);
+//        model.addAttribute("totalPages", totalPages);
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("trangThai", trangThai); // Truyền trạng thái để hiển thị lại trong form search
+//
+//        return "hoa_don/index";
+//    }
 
 
 

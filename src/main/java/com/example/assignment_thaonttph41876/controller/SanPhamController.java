@@ -1,10 +1,12 @@
 package com.example.assignment_thaonttph41876.controller;
 
-import com.example.assignment_thaonttph41876.entities.NhanVien;
 import com.example.assignment_thaonttph41876.entities.SanPham;
-import com.example.assignment_thaonttph41876.repositories.asm1.SanPhamRepository;
+import com.example.assignment_thaonttph41876.repository.asm2.SanPhamRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,10 +27,6 @@ public class SanPhamController {
     //@Repo: truy vấn vaò db
     private SanPhamRepository sanPhamRepository;
 
-//    public SanPhamController() {
-//        this.sanPhamRepository = new SanPhamRepository();
-//    }
-
     @GetMapping("create")
     public String create(@ModelAttribute("data") SanPham sanPham) {
         return "san_pham/create";
@@ -45,24 +43,37 @@ public class SanPhamController {
             model.addAttribute("errors", errors);
             return "san_pham/create";
         };
-        this.sanPhamRepository.create(sanPham);
+        this.sanPhamRepository.save(sanPham);
         return "redirect:/san-pham/index";
     }
 
 
-    @GetMapping("index")
-    public String index(Model model,
-                        @RequestParam(name = "page", defaultValue = "1") int page,
-                        @RequestParam(name = "size", defaultValue = "5") int size) {
-        List<SanPham> sanPhams = sanPhamRepository.findPaginated(page, size);
-        int totalItems = sanPhamRepository.getTotalItems();
-        int totalPages = (int) Math.ceil((double) totalItems / size);
+//    @GetMapping("index")
+////    public String index(Model model,
+////                        @RequestParam(name = "page", defaultValue = "1") int page,
+////                        @RequestParam(name = "size", defaultValue = "5") int size) {
+////        List<SanPham> sanPhams = sanPhamRepository.findPaginated(page, size);
+////        int totalItems = sanPhamRepository.getTotalItems();
+////        int totalPages = (int) Math.ceil((double) totalItems / size);
+////
+////        model.addAttribute("data", sanPhams);
+////        model.addAttribute("currentPage", page);
+////        model.addAttribute("totalPages", totalPages);
+////        return "san_pham/index";
+////    }
 
-        model.addAttribute("data", sanPhams);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
+    @GetMapping("index")
+    public String index(@RequestParam(name = "page", defaultValue = "0") int pageNo,
+                        @RequestParam(name = "size", defaultValue = "10") int pageSize,
+                        Model model) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<SanPham> page = sanPhamRepository.findAll(pageable);
+        model.addAttribute("data", page);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
         return "san_pham/index";
     }
+
 
 
     @GetMapping("delete/{id}")
@@ -72,8 +83,7 @@ public class SanPhamController {
     }
 
     @GetMapping("edit/{id}")
-    public String edit(@PathVariable("id") Integer id, Model model){
-        SanPham sanPham = this.sanPhamRepository.findById(id);
+    public String edit(@PathVariable("id") SanPham sanPham, Model model){
         model.addAttribute("data", sanPham);
         return "san_pham/edit";
     }
@@ -89,22 +99,22 @@ public class SanPhamController {
             model.addAttribute("errors", errors);
             return "san_pham/edit";
         }
-        sanPhamRepository.update(sanPham);
+        sanPhamRepository.save(sanPham);
         return "redirect:/san-pham/index";
     }
-    @GetMapping("search")
-    public String search(@RequestParam(name = "keyword") String keyword,
-                         @RequestParam(name = "page", defaultValue = "1") int page,
-                         @RequestParam(name = "size", defaultValue = "5") int size,
-                         Model model) {
-        List<SanPham> searchResults = sanPhamRepository.searchByNamePaginated(keyword, page, size);
-        int totalItems = sanPhamRepository.getTotalSearchItems(keyword);
-        int totalPages = (int) Math.ceil((double) totalItems / size);
-
-        model.addAttribute("data", searchResults);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("keyword", keyword);
-        return "san_pham/index";
-    }
+//    @GetMapping("search")
+//    public String search(@RequestParam(name = "keyword") String keyword,
+//                         @RequestParam(name = "page", defaultValue = "1") int page,
+//                         @RequestParam(name = "size", defaultValue = "5") int size,
+//                         Model model) {
+//        List<SanPham> searchResults = sanPhamRepository.searchByNamePaginated(keyword, page, size);
+//        int totalItems = sanPhamRepository.getTotalSearchItems(keyword);
+//        int totalPages = (int) Math.ceil((double) totalItems / size);
+//
+//        model.addAttribute("data", searchResults);
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", totalPages);
+//        model.addAttribute("keyword", keyword);
+//        return "san_pham/index";
+//    }
 }

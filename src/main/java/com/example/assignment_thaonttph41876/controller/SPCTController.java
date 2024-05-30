@@ -4,12 +4,15 @@
     import com.example.assignment_thaonttph41876.entities.MauSac;
     import com.example.assignment_thaonttph41876.entities.SanPham;
     import com.example.assignment_thaonttph41876.entities.SanPhamChiTiet;
-    import com.example.assignment_thaonttph41876.repositories.asm1.KichThuocRepository;
-    import com.example.assignment_thaonttph41876.repositories.asm1.MauSacRepository;
-    import com.example.assignment_thaonttph41876.repositories.asm1.SanPhamChiTietRepo;
-    import com.example.assignment_thaonttph41876.repositories.asm1.SanPhamRepository;
+    import com.example.assignment_thaonttph41876.repository.asm2.KichThuocRepository;
+    import com.example.assignment_thaonttph41876.repository.asm2.MauSacRepository;
+    import com.example.assignment_thaonttph41876.repository.asm2.SanPhamChiTietRepo;
+    import com.example.assignment_thaonttph41876.repository.asm2.SanPhamRepository;
     import jakarta.validation.Valid;
     import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.PageRequest;
+    import org.springframework.data.domain.Pageable;
     import org.springframework.stereotype.Controller;
     import org.springframework.ui.Model;
     import org.springframework.validation.BindingResult;
@@ -33,39 +36,51 @@
         private MauSacRepository mauSacRepository;
 
 
+//        @GetMapping("index")
+//        public String index(
+//                @RequestParam(required = false) Integer idSanPham,
+//                @RequestParam(required = false) Double minDonGia,
+//                @RequestParam(required = false) Double maxDonGia,
+//                @RequestParam(defaultValue = "1") int page,
+//                @RequestParam(defaultValue = "5") int pageSize, // Cập nhật kích thước trang mặc định là 5
+//                Model model) {
+//
+//            List<SanPham> listSP = sanPhamRepository.findAll();
+//            model.addAttribute("dataSP", listSP);
+//
+//            List<SanPhamChiTiet> listSPCT;
+//            int totalItems;
+//
+//            if (idSanPham != null) {
+//                listSPCT = sanPhamChiTietRepo.findBySanPhamIdPaginated(idSanPham, page, pageSize);
+//                totalItems = sanPhamChiTietRepo.getTotalItemsBySanPhamId(idSanPham);
+//            } else if (minDonGia != null && maxDonGia != null) {
+//                // Implement search by price range with pagination if needed
+//                listSPCT = sanPhamChiTietRepo.findAll(); // Placeholder
+//                totalItems = listSPCT.size(); // Placeholder
+//            } else {
+//                listSPCT = sanPhamChiTietRepo.findPaginated(page, pageSize);
+//                totalItems = sanPhamChiTietRepo.getTotalItems();
+//            }
+//
+//            model.addAttribute("dataSPCT", listSPCT);
+//            model.addAttribute("currentPage", page);
+//            model.addAttribute("totalItems", totalItems);
+//            model.addAttribute("pageSize", pageSize);
+//            model.addAttribute("totalPages", (int) Math.ceil((double) totalItems / pageSize));
+//
+//            return "spct/index";
+//        }
+
         @GetMapping("index")
-        public String index(
-                @RequestParam(required = false) Integer idSanPham,
-                @RequestParam(required = false) Double minDonGia,
-                @RequestParam(required = false) Double maxDonGia,
-                @RequestParam(defaultValue = "1") int page,
-                @RequestParam(defaultValue = "5") int pageSize, // Cập nhật kích thước trang mặc định là 5
-                Model model) {
-
-            List<SanPham> listSP = sanPhamRepository.findAll();
-            model.addAttribute("dataSP", listSP);
-
-            List<SanPhamChiTiet> listSPCT;
-            int totalItems;
-
-            if (idSanPham != null) {
-                listSPCT = sanPhamChiTietRepo.findBySanPhamIdPaginated(idSanPham, page, pageSize);
-                totalItems = sanPhamChiTietRepo.getTotalItemsBySanPhamId(idSanPham);
-            } else if (minDonGia != null && maxDonGia != null) {
-                // Implement search by price range with pagination if needed
-                listSPCT = sanPhamChiTietRepo.findAll(); // Placeholder
-                totalItems = listSPCT.size(); // Placeholder
-            } else {
-                listSPCT = sanPhamChiTietRepo.findPaginated(page, pageSize);
-                totalItems = sanPhamChiTietRepo.getTotalItems();
-            }
-
-            model.addAttribute("dataSPCT", listSPCT);
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalItems", totalItems);
-            model.addAttribute("pageSize", pageSize);
-            model.addAttribute("totalPages", (int) Math.ceil((double) totalItems / pageSize));
-
+        public String index(@RequestParam(name = "page", defaultValue = "0") int pageNo,
+                            @RequestParam(name = "size", defaultValue = "10") int pageSize,
+                            Model model) {
+            Pageable pageable = PageRequest.of(pageNo, pageSize);
+            Page<SanPhamChiTiet> page = sanPhamChiTietRepo.findAll(pageable);
+            model.addAttribute("data", page);
+            model.addAttribute("currentPage", pageNo);
+            model.addAttribute("totalPages", page.getTotalPages());
             return "spct/index";
         }
 
@@ -99,7 +114,7 @@
                 model.addAttribute("errors", errors);
                 return "spct/create";
             };
-            this.sanPhamChiTietRepo.create(sanPhamChiTiet);
+            this.sanPhamChiTietRepo.save(sanPhamChiTiet);
             return "redirect:/spct/index";
         }
 
@@ -110,8 +125,7 @@
         }
 
         @GetMapping("edit/{id}")
-        public String edit(@PathVariable("id") Integer id, Model model){
-            SanPhamChiTiet sanPhamChiTiet = this.sanPhamChiTietRepo.findById(id);
+        public String edit(@PathVariable("id") SanPhamChiTiet sanPhamChiTiet, Model model){
             model.addAttribute("data", sanPhamChiTiet);
             List<SanPham> listSP = sanPhamRepository.findAll();
             List<KichThuoc> listKT = kichThuocRepository.findAll();
@@ -140,7 +154,7 @@
                 model.addAttribute("errors", errors);
                 return "spct/edit";
             }
-            this.sanPhamChiTietRepo.update(sanPhamChiTiet);
+            this.sanPhamChiTietRepo.save(sanPhamChiTiet);
             return "redirect:/spct/index";
         }
 
