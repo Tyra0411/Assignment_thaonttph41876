@@ -16,33 +16,41 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 @Entity
-@Table
+@Table(name = "SanPhamChiTiet")
 public class SanPhamChiTiet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
+
     @NotBlank
     @Column(name = "MaSPCT")
     private String maSPCT;
+
     @NotNull
-    @Digits(integer = 1, fraction = 0)
+    @Digits(integer = 10, fraction = 0)
     @Column(name = "IdKichThuoc")
-    private Integer idKichThuoc;
+    private int idKT;
+
     @NotNull
-    @Digits(integer = 1, fraction = 0)
+    @Digits(integer = 10, fraction = 0)
     @Column(name = "IdSanPham")
-    private Integer idSanPham;
+    private int idSP;
+
     @NotNull
-    @Digits(integer = 1, fraction = 0)
+    @Digits(integer = 10, fraction = 0)
     @Column(name = "IdMauSac")
-    private Integer idMauSac;
+    private int idMS;
+
     @NotNull
     @Column(name = "SoLuong")
     private int soLuong;
+
     @NotNull
     @Column(name = "DonGia")
     private double donGia;
+
     @NotNull
     @Digits(integer = 1, fraction = 0)
     @Column(name = "TrangThai")

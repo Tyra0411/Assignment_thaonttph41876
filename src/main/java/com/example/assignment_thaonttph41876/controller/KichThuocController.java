@@ -2,6 +2,7 @@ package com.example.assignment_thaonttph41876.controller;
 
 import com.example.assignment_thaonttph41876.entities.KichThuoc;
 import com.example.assignment_thaonttph41876.repository.asm2.KichThuocRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -113,31 +114,24 @@ public class KichThuocController {
         return "redirect:/kich-thuoc/index";
     }
 
-//    @GetMapping("search")
-//    public String search(@RequestParam(name = "name", required = false, defaultValue = "") String name,
-//                         @RequestParam(name = "page", defaultValue = "1") int page,
-//                         @RequestParam(name = "size", defaultValue = "5") int size,
-//                         Model model) {
-//        List<KichThuoc> searchResults;
-//        int totalItems;
-//
-//        if (name.isEmpty()) {
-//            // Nếu không nhập gì vào ô input tìm kiếm, trả về danh sách ban đầu
-//            searchResults = kichThuocRepository.findPaginated(page, size);
-//            totalItems = kichThuocRepository.getTotalItems();
-//        } else {
-//            // Thực hiện tìm kiếm theo tên
-//            searchResults = kichThuocRepository.findByName(name);
-//            totalItems = kichThuocRepository.getTotalSearchItems(name);
-//        }
-//
-//        int totalPages = (int) Math.ceil((double) totalItems / size);
-//
-//        model.addAttribute("data", searchResults);
-//        model.addAttribute("currentPage", page);
-//        model.addAttribute("totalPages", totalPages);
-//        model.addAttribute("name", name); // Chuyển tên kích thước vào view để hiển thị trong input search
-//        return "kich_thuoc/index";
-//    }
+    @GetMapping("search")
+    public String search(HttpSession session,
+                         @RequestParam(name = "page", defaultValue = "0") int pageNo,
+                         @RequestParam(name = "size", defaultValue = "10") int pageSize,
+                         @RequestParam(name = "keyword", required = false) String keyword,
+                         Model model) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<KichThuoc> page;
+        if (keyword != null && !keyword.isEmpty()) {
+            page = kichThuocRepository.findByTenContainingIgnoreCase(keyword, pageable);
+        } else {
+            page = kichThuocRepository.findAll(pageable);
+        }
+        model.addAttribute("data", page);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("keyword", keyword);
+        return "kich_thuoc/index";
+    }
 
 }

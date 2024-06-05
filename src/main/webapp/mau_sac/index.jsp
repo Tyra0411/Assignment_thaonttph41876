@@ -13,12 +13,12 @@
 <body class="container mt-3">
 <h2 class="text-center">Quản Lý Màu Sắc</h2>
 <div class="text-end mt-3">
-    <a href="${pageContext.request.contextPath}/mau-sac/create" class="btn btn-primary">Add</a>
+    <a href="/mau-sac/create" class="btn btn-primary">Add</a>
 </div>
 <div class="my-3">
-    <form method="get" action="${pageContext.request.contextPath}/mau-sac/search" class="d-flex">
+    <form method="get" action="/mau-sac/search" class="d-flex">
         <div class="input-group">
-            <input type="text" name="name" class="form-control" placeholder="Nhập tên màu sắc">
+            <input type="text" name="keyword" value="${keyword}" class="form-control" placeholder="Nhập tên màu sắc">
             <button type="submit" class="btn btn-info">Tìm kiếm</button>
         </div>
     </form>

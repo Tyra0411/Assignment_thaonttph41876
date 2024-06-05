@@ -16,25 +16,23 @@
 </h2>
 <form action="/hoa-don/update/${data.id}" method="post">
     <div class="mt-3">
-        <label class="form-label">ID:</label>
-        <input type="text" class="form-control" name="id" value="${data.id}" disabled>
-    </div>
-    <div class="mt-3">
         <label class="form-label">ID nhân viên:</label>
         <select name="idNhanVien" class="form-control">
             <c:forEach items="${dataNV}" var="nv">
                 <option value="${nv.id}"
-                        ${nv.id == data.idNhanVien?"selected":""}>${nv.ten}</option>
+                    ${nv.id == data.idNhanVien?"selected":""}>${nv.ten}</option>
             </c:forEach>
-        </select>    </div>
+        </select>
+    </div>
     <div class="mt-3">
         <label class="form-label">ID khách hàng:</label>
         <select name="idKhachHang" class="form-control">
             <c:forEach items="${dataKH}" var="kh">
                 <option value="${kh.id}"
-                        ${kh.id == data.idKhachHang?"selected":""}>${kh.ten}</option>
+                    ${kh.id == data.idKhachHang?"selected":""}>${kh.ten}</option>
             </c:forEach>
-        </select>    </div>
+        </select>
+    </div>
     <div class="mt-3">
         <label class="form-label">Trạng thái:</label>
         <select name="trangThai" class="form-control">

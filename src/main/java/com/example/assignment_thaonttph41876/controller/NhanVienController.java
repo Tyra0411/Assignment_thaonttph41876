@@ -2,6 +2,7 @@ package com.example.assignment_thaonttph41876.controller;
 
 import com.example.assignment_thaonttph41876.entities.NhanVien;
 import com.example.assignment_thaonttph41876.repository.asm2.NhanVienRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -120,21 +121,24 @@ public class NhanVienController {
     }
 
 
-//    @GetMapping("search")
-//    public String search(@RequestParam(name = "keyword") String keyword,
-//                         @RequestParam(name = "page", defaultValue = "1") int page,
-//                         @RequestParam(name = "size", defaultValue = "5") int size,
-//                         Model model) {
-//        List<NhanVien> searchResults = nhanVienRepository.searchByNamePaginated(keyword, page, size);
-//        int totalItems = nhanVienRepository.getTotalSearchItems(keyword);
-//        int totalPages = (int) Math.ceil((double) totalItems / size);
-//
-//        model.addAttribute("data", searchResults);
-//        model.addAttribute("currentPage", page);
-//        model.addAttribute("totalPages", totalPages);
-//        model.addAttribute("keyword", keyword);
-//        model.addAttribute("size", size); // Thêm dòng này để giữ kích thước trang không bị mất khi tìm kiếm
-//        return "nhan_vien/index";
-//    }
+    @GetMapping("search")
+    public String search(HttpSession session,
+                         @RequestParam(name = "page", defaultValue = "0") int pageNo,
+                         @RequestParam(name = "size", defaultValue = "10") int pageSize,
+                         @RequestParam(name = "keyword", required = false) String keyword,
+                         Model model) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<NhanVien> page;
+        if (keyword != null && !keyword.isEmpty()) {
+            page = nhanVienRepository.findByTenContainingIgnoreCase(keyword, pageable);
+        } else {
+            page = nhanVienRepository.findAll(pageable);
+        }
+        model.addAttribute("data", page);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("keyword", keyword);
+        return "nhan_vien/index";
+    }
 
 }

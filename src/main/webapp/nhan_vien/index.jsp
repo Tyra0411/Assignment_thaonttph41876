@@ -21,7 +21,7 @@
 </div>
 <form action="/nhan-vien/search" method="get" class="mb-3"> <!-- Sửa action -->
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Nhập tên nhân viên" name="keyword">
+        <input type="text" class="form-control" placeholder="Nhập tên nhân viên" name="keyword" value="${keyword}">
         <button type="submit" class="btn btn-info">Search</button>
     </div>
 </form>

@@ -21,7 +21,7 @@
 </div>
 <form action="/san-pham/search" method="get" class="mb-3">
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" name="keyword">
+        <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" name="keyword"  value="${keyword}">
         <button type="submit" class="btn btn-info">Search</button>
     </div>
 </form>

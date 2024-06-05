@@ -17,42 +17,33 @@
 <div>
     <form method="post" action="/spct/update/${data.id}">
         <div class="mt-3">
-            <label class="form-label">ID:</label>
-            <input type="text" class="form-control" name="id" value="${data.id}" disabled>
-        </div>
-        <div class="mt-3">
             <label class="form-label">Mã Sản Phẩm Chi Tiết:</label>
             <input type="text" class="form-control" name="maSPCT" value="${data.maSPCT}">
             <c:if test="${not empty errors['maSPCT']}">
-                <small class="text-danger">
-                        ${errors['maSPCT']}
-                </small>
+                <small class="text-danger">${errors['maSPCT']}</small>
             </c:if>
         </div>
         <div class="mt-3">
             <label class="form-label">Sản Phẩm:</label>
-            <select name="idSanPham" class="form-control">
+            <select name="idSP" class="form-control">
                 <c:forEach items="${dataSP}" var="sp">
-                    <option value="${sp.id}"
-                        ${data.idSanPham == sp.id ? "selected" : ""}>${sp.ten}</option>
+                    <option value="${sp.id}" ${data.idSP == sp.id ? "selected" : ""}>${sp.ten}</option>
                 </c:forEach>
             </select>
         </div>
         <div class="mt-3">
             <label class="form-label">Kích Thước:</label>
-            <select name="idKichThuoc" class="form-control">
+            <select name="idKT" class="form-control">
                 <c:forEach items="${dataKT}" var="kt">
-                    <option value="${kt.id}"
-                        ${data.idKichThuoc == kt.id ? "selected" : ""}>${kt.ten}</option>
+                    <option value="${kt.id}" ${data.idKT == kt.id ? "selected" : ""}>${kt.ten}</option>
                 </c:forEach>
             </select>
         </div>
         <div class="mt-3">
             <label class="form-label">Màu Sắc:</label>
-            <select name="idMauSac" class="form-control">
+            <select name="idMS" class="form-control">
                 <c:forEach items="${dataMS}" var="ms">
-                    <option value="${ms.id}"
-                        ${data.idMauSac == ms.id ? "selected" : ""}>${ms.ten}</option>
+                    <option value="${ms.id}" ${data.idMS == ms.id ? "selected" : ""}>${ms.ten}</option>
                 </c:forEach>
             </select>
         </div>
@@ -60,27 +51,21 @@
             <label class="form-label">Số Lượng:</label>
             <input type="number" class="form-control" name="soLuong" value="${data.soLuong}">
             <c:if test="${not empty errors['soLuong']}">
-                <small class="text-danger">
-                        ${errors['soLuong']}
-                </small>
+                <small class="text-danger">${errors['soLuong']}</small>
             </c:if>
         </div>
         <div class="mt-3">
             <label class="form-label">Đơn Giá:</label>
-            <input type="number" class="form-control" name="donGia" value="${data.donGia}">
+            <input type="text" class="form-control" name="donGia" value="${data.donGia}">
             <c:if test="${not empty errors['donGia']}">
-                <small class="text-danger">
-                        ${errors['donGia']}
-                </small>
+                <small class="text-danger">${errors['donGia']}</small>
             </c:if>
         </div>
         <div class="mt-3">
-            <label class="form-label">Trạng thái:</label>
+            <label class="form-label">Trạng Thái:</label>
             <select class="form-control" name="trangThai">
-                <option value="1"
-                ${data.trangThai==1?"selected":""}>Đang hoạt động</option>
-                <option value="0"
-                ${data.trangThai==0?"selected":""}>Ngừng hoạt động</option>
+                <option value="1" ${data.trangThai == 1 ? "selected" : ""}>Đang hoạt động</option>
+                <option value="0" ${data.trangThai == 0 ? "selected" : ""}>Ngừng hoạt động</option>
             </select>
         </div>
         <div class="mt-3">

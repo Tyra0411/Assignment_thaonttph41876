@@ -15,17 +15,19 @@
 <%--        Add--%>
 <%--    </a>--%>
 <%--</div>--%>
-    <form method="get" action="/hdct/index" class="my-3">
-        <div class="input-group">
-            <input type="number" name="idHoaDon" class="form-control" placeholder="Tìm kiếm theo ID hóa đơn"
-                   value="${idHoaDon != null ? idHoaDon : ''}">
-            <button type="submit" class="btn btn-info">Search</button>
-        </div>
-    </form>
+<form method="get" action="/hdct/search" class="my-3">
+    <div class="input-group">
+        <input type="number" name="idHoaDon" class="form-control" placeholder="Tìm kiếm theo ID hóa đơn"
+               value="${idHoaDon != null ? idHoaDon : ''}">
+        <button type="submit" class="btn btn-info">Tìm kiếm</button>
+    </div>
+</form>
+
 
 <table class="table table-bordered mt-3">
     <thead>
     <th>ID</th>
+    <th>ID hoa don</th>
     <th>ID SPCT</th>
     <th>Số lượng</th>
     <th>Đơn giá</th>
@@ -36,7 +38,8 @@
     <c:forEach items="${data.content}" var="hdct" varStatus="i">
         <tr>
             <td>${hdct.id}</td>
-            <td>${hdct.idSPCT}</td>
+            <td>${hdct.hd.id}</td>
+            <td>${hdct.spct.id}</td>
             <td>${hdct.soLuong}</td>
             <td>${hdct.donGia}</td>
             <td>${hdct.trangThai == 1 ? "Đã thanh toán" : "Chưa thanh toán"}</td>

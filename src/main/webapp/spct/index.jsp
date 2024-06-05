@@ -22,9 +22,9 @@
 <form action="/spct/index" method="get">
     <label class="form-label">Sản phẩm:</label>
     <select name="idSanPham" class="form-control">
-        <option value="">Tat ca</option>
+        <option value="">Tất cả</option>
         <c:forEach items="${dataSP}" var="s">
-            <option value="${s.id}">${s.ten}</option>
+            <option value="${s.id}" ${s.id == idSanPham ? 'selected' : ''}>${s.ten}</option>
         </c:forEach>
     </select>
     <div class="mt-3 text-end">
@@ -35,6 +35,7 @@
     <thead>
     <th>ID</th>
     <th>Mã SPCT</th>
+    <th>Tên Sản phẩm</th>
     <th>Kích thước</th>
     <th>Màu sắc</th>
     <th>Số lượng</th>
@@ -43,18 +44,19 @@
     <th>Hoạt động</th>
     </thead>
     <tbody>
-    <c:forEach items="${data.content}" var="spct">
+    <c:forEach items="${data}" var="spct">
         <tr>
             <td>${spct.id}</td>
             <td>${spct.maSPCT}</td>
-            <td>${spct.idKichThuoc}</td>
-            <td>${spct.idMauSac}</td>
+            <td>${spct.tenSP}</td>
+            <td>${spct.tenKT}</td>
+            <td>${spct.tenMS}</td>
             <td>${spct.soLuong}</td>
             <td>${spct.donGia}</td>
-            <td>${spct.trangThai == 1 ? "Dang hoat dong" : "Ngung hoat dong"}</td>
+            <td>${spct.trangThai == 1 ? "Hoạt động" : "Không hoạt động"}</td>
             <td>
                 <a href="/spct/edit/${spct.id}" class="btn btn-success">Update</a>
-                <a onclick="return confirm('Ban chắc chắn muốn xóa?')" href="/spct/delete/${spct.id}" class="btn btn-danger">Delete</a>
+                <a onclick="return confirm('Bạn chắc chắn muốn xóa?')" href="/spct/delete/${spct.id}" class="btn btn-danger">Delete</a>
             </td>
         </tr>
     </c:forEach>
@@ -66,12 +68,12 @@
         <ul class="pagination justify-content-center">
             <c:if test="${currentPage > 0}">
                 <li class="page-item">
-                    <a class="page-link" href="/spct/index?page=0&size=${data.size}" aria-label="First">
+                    <a class="page-link" href="/spct/index?page=0&size=${size}&idSanPham=${idSanPham}" aria-label="First">
                         <span aria-hidden="true">&laquo;&laquo; First</span>
                     </a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="/spct/index?page=${currentPage - 1}&size=${data.size}" aria-label="Previous">
+                    <a class="page-link" href="/spct/index?page=${currentPage - 1}&size=${size}&idSanPham=${idSanPham}" aria-label="Previous">
                         <span aria-hidden="true">&laquo; Previous</span>
                     </a>
                 </li>
@@ -81,12 +83,12 @@
             </li>
             <c:if test="${currentPage < totalPages - 1}">
                 <li class="page-item">
-                    <a class="page-link" href="/spct/index?page=${currentPage + 1}&size=${data.size}" aria-label="Next">
+                    <a class="page-link" href="/spct/index?page=${currentPage + 1}&size=${size}&idSanPham=${idSanPham}" aria-label="Next">
                         <span aria-hidden="true">Next &raquo;</span>
                     </a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="/spct/index?page=${totalPages - 1}&size=${data.size}" aria-label="Last">
+                    <a class="page-link" href="/spct/index?page=${totalPages - 1}&size=${size}&idSanPham=${idSanPham}" aria-label="Last">
                         <span aria-hidden="true">Last &raquo;&raquo;</span>
                     </a>
                 </li>
@@ -94,24 +96,6 @@
         </ul>
     </nav>
 </div>
-<!-- Hiển thị phân trang -->
-<%--<div class="d-flex justify-content-center">--%>
-<%--    <nav aria-label="Page navigation">--%>
-<%--        <ul class="pagination">--%>
-<%--            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">--%>
-<%--                <a class="page-link" href="/spct/index?idSanPham=${idSanPham}&page=${currentPage - 1}" tabindex="-1" aria-disabled="${currentPage == 1}">Previous</a>--%>
-<%--            </li>--%>
-<%--            <c:forEach begin="1" end="${totalPages}" var="pageNum">--%>
-<%--                <li class="page-item ${pageNum == currentPage ? 'active' : ''}">--%>
-<%--                    <a class="page-link" href="/spct/index?idSanPham=${idSanPham}&page=${pageNum}">${pageNum}</a>--%>
-<%--                </li>--%>
-<%--            </c:forEach>--%>
-<%--            <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">--%>
-<%--                <a class="page-link" href="/spct/index?idSanPham=${idSanPham}&page=${currentPage + 1}">Next</a>--%>
-<%--            </li>--%>
-<%--        </ul>--%>
-<%--    </nav>--%>
-<%--</div>--%>
 
 </body>
 </html>

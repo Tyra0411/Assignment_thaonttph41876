@@ -57,31 +57,6 @@ public class HDCTController {
 //        return "redirect:/hdct/index";
 //    }
 
-//    @GetMapping("index")
-//    public String index(Model model,
-//                        @RequestParam(name = "page", defaultValue = "1") int page,
-//                        @RequestParam(name = "size", defaultValue = "5") int size,
-//                        @RequestParam(name = "idHoaDon", required = false) Integer idHoaDon) {
-//        if (idHoaDon != null && idHoaDon <= 0) {
-//            idHoaDon = null;
-//        }
-//        List<HDCT> hdcts = (idHoaDon == null)
-//                ? hdctRepository.findPaginated(page, size)
-//                : hdctRepository.findByHoaDonIdPaginated(idHoaDon, page, size);
-//
-//        int totalItems = (idHoaDon == null)
-//                ? hdctRepository.getTotalItems()
-//                : hdctRepository.getTotalItemsByHoaDonId(idHoaDon);
-//
-//        int totalPages = (int) Math.ceil((double) totalItems / size);
-//
-//        model.addAttribute("data", hdcts);
-//        model.addAttribute("currentPage", page);
-//        model.addAttribute("totalPages", totalPages);
-//        model.addAttribute("idHoaDon", idHoaDon);
-//        return "hdct/index";
-//    }
-
     @GetMapping("index")
     public String index(@RequestParam(name = "page", defaultValue = "0") int pageNo,
                         @RequestParam(name = "size", defaultValue = "10") int pageSize,
@@ -129,4 +104,5 @@ public class HDCTController {
         this.hdctRepository.save(hdct);
         return "redirect:/hdct/index";
     }
+    
 }

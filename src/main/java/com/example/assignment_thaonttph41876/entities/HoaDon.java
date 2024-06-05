@@ -32,7 +32,6 @@ public class HoaDon {
     @Digits(integer = 1, fraction = 0)
     @Column(name = "IdKH")
     private int idKhachHang;
-    @NotBlank
     @Column(name = "NgayMuaHang")
     private Date ngayMuaHang;
     @NotNull

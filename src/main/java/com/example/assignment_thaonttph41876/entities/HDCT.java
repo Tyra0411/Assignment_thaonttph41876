@@ -24,12 +24,14 @@ public class HDCT {
     private Integer id;
     @NotNull
     @Digits(integer = 1, fraction = 0)
-    @Column(name = "IdHoaDon")
-    private int idHoaDon;
+    @ManyToOne
+    @JoinColumn(name = "IdHoaDon")
+    private HoaDon hd;
     @NotNull
-    @Column(name = "IdSPCT")
+    @OneToOne
+    @JoinColumn(name = "IdSPCT")
     @Digits(integer = 1, fraction = 0)
-    private int idSPCT;
+    private SanPhamChiTiet spct;
     @NotNull
     @Positive
     @Column(name = "SoLuong")
